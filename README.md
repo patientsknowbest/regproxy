@@ -12,23 +12,22 @@ It can be used to implement a control plane for a dynamic set of services, where
 errors must be highlighted to the caller rather than ignored.
 
 ## Prerequisites
-* java > 11
-* maven
+* docker
 
 ## Instructions
 To build:
 ```bash
-mvn clean package
+docker build . -t regproxy
 ```
 
 To run:
 ```bash
-java -jar target/app.jar
+docker run --rm -it --network=host regproxy
 ```
 
 For command line options see: 
 ```bash
-java -jar target/app.jar --help
+docker run --rm -it --network=host regproxy --help
 ```
 
 To test: 
@@ -37,7 +36,7 @@ To test:
 * register both those servers with the reverse proxy
 * make a request to the proxy
 ```bash
-java -jar target/app.jar&
+docker run -d --rm -it --network=host regproxy
 python -m http.server 3000&
 python -m http.server 3001&
 curl -X PUT http://localhost:9876/register -d '{"name": "upstream-1", "callback": "http://localhost:3000"}'
